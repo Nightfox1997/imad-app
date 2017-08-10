@@ -1,9 +1,77 @@
 <!doctype html>
 <html>
     <head>
-        <link href="/ui/style.css" rel="stylesheet" />
+        <body>
+     <img class="bannerImg" height="100%" width="100%" src="images/1px.png">
+element.style {
+}
+bootstrap.min.css:5
+img {
+    vertical-align: middle;
+}
+bootstrap.min.css:5
+img {
+    border: 0;
+}
+style.css:1
+ {
+    padding: 0;
+    margin: 0;
+}
+(function($) {
+    var pluginName = 'particleground';
+    function Plugin(element, options) {
+        var el = element;
+        var $el = $(element);
+        var canvasSupport = !!document.createElement('canvas').getContext;
+        var canvas;
+        var ctx;
+        var particles = [];
+        var raf;
+        var mouseX = 0;
+        var mouseY = 0;
+        var winW;
+        var winH;
+        var desktop = !navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|BB10|mobi|tablet|opera mini|nexus 7)/i);
+        var orientationSupport = !!window.DeviceOrientationEvent;
+        var tiltX = 0;
+        var tiltY = 0;
+        var paused = false;
+        options = $.extend({}, $.fn[pluginName].defaults, options);
+        function init() {
+            if (!canvasSupport) {
+                return;
+            }
+            $canvas = $('<canvas class="pg-canvas" style="display:block;"></canvas>');
+            $el.prepend($canvas);
+            canvas = $canvas[0];
+            ctx = canvas.getContext('2d');
+            styleCanvas();
+            var numParticles = Math.round((canvas.width * canvas.height) / options.density);
+            for (var i = 0; i < numParticles; i++) {
+                var p = new Particle();
+                p.setStackPos(i);
+                particles.push(p);
+            }
+            ;$(window).on('resize', function() {
+                resizeHandler();
+            });
+            $(document).on('mousemove', function(e) {
+                mouseX = e.pageX;
+                mouseY = e.pageY;
+            });
+            if (orientationSupport && !desktop) {
+                window.addEventListener('deviceorientation', function() {
+                    tiltY = Math.min(Math.max(-event.beta, -30), 30);
+                    tiltX = Math.min(Math.max(-event.gamma, -30), 30);
+                }, true);
+            }
+            draw();
+            hook('onInit');
+        }
     </head>
-    <body>
+   
+    
         <div class="center">
             <img src="/ui/madi.png" class="img-medium"/>
         </div>
